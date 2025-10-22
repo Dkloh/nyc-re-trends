@@ -1,0 +1,223 @@
+# scripts/clean_data.py
+"""
+NYC Real Estate Data Cleaning Pipeline
+Cleans and normalizes NYC property sales and rental data for analysis
+"""
+
+import pandas as pd
+import numpy as np
+import sqlite3
+from pathlib import Path
+import logging
+
+# Setup logging
+logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
+logger = logging.getLogger(__name__)
+
+class NYCRealEstateDataCleaner:
+    def __init__(self):
+        self.data_dir = Path("data")
+        self.raw_dir = self.data_dir / "raw"
+        self.clean_dir = self.data_dir / "clean"
+        self.outputs_dir = self.data_dir / "outputs"
+        
+        # Ensure directories exist
+        for dir_path in [self.raw_dir, self.clean_dir, self.outputs_dir]:
+            dir_path.mkdir(parents=True, exist_ok=True)
+    
+    def clean_sales_data(self, filename="nyc_property_sales.csv"):
+        """Clean NYC property sales data"""
+        logger.info(f"Cleaning sales data from {filename}")
+        
+        try:
+            # Read raw sales data
+            df = pd.read_csv(self.raw_dir / filename, low_memory=False)
+            logger.info(f"Loaded {len(df):,} raw sales records")
+            
+            # Basic info about the dataset
+            logger.info(f"Original columns: {list(df.columns)}")
+            
+            # Standardize column names (handle different naming conventions)
+            column_mapping = {
+                'SALE DATE': 'sale_date',
+                'SALE_DATE': 'sale_date',
+                'sale_date': 'sale_date',
+                'SALE PRICE': 'sale_price', 
+                'SALE_PRICE': 'sale_price',
+                'sale_price': 'sale_price',
+                'BOROUGH': 'borough',
+                'borough': 'borough',
+                'NEIGHBORHOOD': 'neighborhood',
+                'neighborhood': 'neighborhood',
+                'BUILDING CLASS CATEGORY': 'building_class_category',
+                'building_class_category': 'building_class_category',
+                'ZIP CODE': 'zip_code',
+                'zip_code': 'zip_code',
+                'RESIDENTIAL UNITS': 'residential_units',
+                'residential_units': 'residential_units',
+                'COMMERCIAL UNITS': 'commercial_units', 
+                'commercial_units': 'commercial_units',
+                'TOTAL UNITS': 'total_units',
+                'total_units': 'total_units',
+                'LAND SQUARE FEET': 'land_sqft',
+                'land_sqft': 'land_sqft',
+                'GROSS SQUARE FEET': 'gross_sqft',
+                'gross_sqft': 'gross_sqft'
+            }
+            
+            # Rename columns that exist
+            existing_renames = {k: v for k, v in column_mapping.items() if k in df.columns}
+            df = df.rename(columns=existing_renames)
+            
+            # Convert sale_date to datetime
+            if 'sale_date' in df.columns:
+                df['sale_date'] = pd.to_datetime(df['sale_date'], errors='coerce')
+            
+            # Clean sale_price - remove $ signs, commas, convert to numeric
+            if 'sale_price' in df.columns:
+                df['sale_price'] = df['sale_price'].astype(str).str.replace('$', '').str.replace(',', '')
+                df['sale_price'] = pd.to_numeric(df['sale_price'], errors='coerce')
+                
+                # Filter out unrealistic prices (likely data errors)
+                df = df[(df['sale_price'] >= 1000) & (df['sale_price'] <= 50000000)]
+            
+            # Clean and standardize borough names
+            if 'borough' in df.columns:
+                borough_mapping = {
+                    '1': 'Manhattan', 'MANHATTAN': 'Manhattan', 'MN': 'Manhattan',
+                    '2': 'Bronx', 'BRONX': 'Bronx', 'BX': 'Bronx',
+                    '3': 'Brooklyn', 'BROOKLYN': 'Brooklyn', 'BK': 'Brooklyn',
+                    '4': 'Queens', 'QUEENS': 'Queens', 'QN': 'Queens',
+                    '5': 'Staten Island', 'STATEN ISLAND': 'Staten Island', 'SI': 'Staten Island'
+                }
+                
+                df['borough'] = df['borough'].astype(str).str.strip().str.upper()
+                df['borough'] = df['borough'].map(borough_mapping).fillna(df['borough'])
+                
+                # Clean up any remaining inconsistencies
+                df['borough'] = df['borough'].str.title()
+            
+            # Clean neighborhood names
+            if 'neighborhood' in df.columns:
+                df['neighborhood'] = df['neighborhood'].astype(str).str.strip().str.title()
+                # Remove extra spaces and standardize
+                df['neighborhood'] = df['neighborhood'].str.replace(r'\s+', ' ', regex=True)
+            
+            # Convert numeric fields
+            numeric_fields = ['residential_units', 'commercial_units', 'total_units', 'land_sqft', 'gross_sqft']
+            for field in numeric_fields:
+                if field in df.columns:
+                    df[field] = pd.to_numeric(df[field], errors='coerce')
+            
+            # Add derived fields for analysis
+            if 'sale_date' in df.columns:
+                df['sale_year'] = df['sale_date'].dt.year
+                df['sale_month'] = df['sale_date'].dt.month
+                df['sale_quarter'] = df['sale_date'].dt.quarter
+                df['year_month'] = df['sale_date'].dt.to_period('M')
+            
+            if 'sale_price' in df.columns and 'gross_sqft' in df.columns:
+                df['price_per_sqft'] = df['sale_price'] / df['gross_sqft']
+                # Remove outliers in price per sqft (likely data errors)
+                df = df[(df['price_per_sqft'] <= 2000) | pd.isna(df['price_per_sqft'])]
+            
+            # Remove rows with missing critical data
+            critical_cols = ['sale_date', 'sale_price', 'borough']
+            existing_critical = [col for col in critical_cols if col in df.columns]
+            df = df.dropna(subset=existing_critical)
+            
+            logger.info(f"After cleaning: {len(df):,} sales records")
+            
+            # Save cleaned data
+            output_path = self.clean_dir / "sales_clean.csv"
+            df.to_csv(output_path, index=False)
+            logger.info(f"Cleaned sales data saved to {output_path}")
+            
+            return df
+            
+        except Exception as e:
+            logger.error(f"Error cleaning sales data: {str(e)}")
+            raise
+    
+    def create_summary_stats(self, df):
+        """Generate summary statistics for the cleaned data"""
+        logger.info("Generating summary statistics")
+        
+        stats = {
+            'total_records': len(df),
+            'date_range': f"{df['sale_date'].min().strftime('%Y-%m-%d')} to {df['sale_date'].max().strftime('%Y-%m-%d')}",
+            'price_stats': df['sale_price'].describe(),
+            'borough_counts': df['borough'].value_counts(),
+            'avg_price_by_borough': df.groupby('borough')['sale_price'].mean().round(2),
+            'transactions_by_year': df['sale_year'].value_counts().sort_index()
+        }
+        
+        # Save summary stats
+        with open(self.outputs_dir / "data_summary.txt", 'w') as f:
+            f.write("NYC Real Estate Data Summary\n")
+            f.write("=" * 40 + "\n\n")
+            f.write(f"Total Records: {stats['total_records']:,}\n")
+            f.write(f"Date Range: {stats['date_range']}\n\n")
+            f.write("Price Statistics:\n")
+            f.write(str(stats['price_stats']) + "\n\n")
+            f.write("Transactions by Borough:\n")
+            f.write(str(stats['borough_counts']) + "\n\n")
+            f.write("Average Price by Borough:\n")
+            f.write(str(stats['avg_price_by_borough']) + "\n\n")
+            f.write("Transactions by Year:\n")
+            f.write(str(stats['transactions_by_year']) + "\n")
+        
+        logger.info("Summary statistics saved to data_summary.txt")
+        return stats
+    
+    def export_to_sqlite(self, df, db_name="nyc_real_estate.db"):
+        """Export cleaned data to SQLite database"""
+        logger.info(f"Exporting data to SQLite database: {db_name}")
+        
+        db_path = self.outputs_dir / db_name
+        conn = sqlite3.connect(db_path)
+        
+        # Export main sales table
+        df.to_sql('sales', conn, if_exists='replace', index=False)
+        
+        # Create indexes for better query performance
+        cursor = conn.cursor()
+        cursor.execute("CREATE INDEX idx_sale_date ON sales(sale_date)")
+        cursor.execute("CREATE INDEX idx_borough ON sales(borough)")
+        cursor.execute("CREATE INDEX idx_year_month ON sales(year_month)")
+        
+        conn.commit()
+        conn.close()
+        
+        logger.info(f"Data exported to SQLite database at {db_path}")
+
+def main():
+    """Main execution function"""
+    cleaner = NYCRealEstateDataCleaner()
+    
+    # Check if raw data exists
+    sales_file = cleaner.raw_dir / "nyc_property_sales.csv"
+    
+    if not sales_file.exists():
+        logger.warning(f"Sales data file not found at {sales_file}")
+        logger.info("Please download NYC property sales data and place it in the data/raw/ directory")
+        logger.info("Recommended sources:")
+        logger.info("1. NYC Open Data - Property Sales: https://data.cityofnewyork.us/City-Government/Property-Sales/k3fi-ggmv")
+        logger.info("2. Kaggle NYC Property Sales: https://www.kaggle.com/new-york-city/nyc-property-sales")
+        return
+    
+    # Clean the data
+    df = cleaner.clean_sales_data()
+    
+    # Generate summary statistics
+    stats = cleaner.create_summary_stats(df)
+    
+    # Export to SQLite for SQL analysis
+    cleaner.export_to_sqlite(df)
+    
+    logger.info("Data cleaning pipeline completed successfully!")
+    logger.info(f"Cleaned data available in: {cleaner.clean_dir}")
+    logger.info(f"Analysis outputs in: {cleaner.outputs_dir}")
+
+if __name__ == "__main__":
+    main()
