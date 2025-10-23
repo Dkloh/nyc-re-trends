@@ -1,0 +1,205 @@
+borough,sale_year,current_year_avg,previous_year_avg,current_transactions,yoy_growth_percent,price_change_dollars
+Bronx,2025,1545778,1178899,3004,31.12,366879
+Brooklyn,2025,1694202,1613335,10048,5.01,80867
+"Staten Island",2025,791082,777327,3080,1.77,13755
+Queens,2025,1180597,1405803,11307,-16.02,-225206
+Manhattan,2025,2694764,3368782,10873,-20.01,-674018
+month,borough,transactions,total_volume_dollars,avg_transaction_size
+2024-10,Bronx,339,371999638,1097344
+2024-10,Brooklyn,1093,1611327793,1474224
+2024-10,Manhattan,1173,5276555903,4498342
+2024-10,Queens,1518,1781973530,1173895
+2024-10,"Staten Island",446,368286266,825753
+2024-11,Bronx,310,331110330,1068097
+2024-11,Brooklyn,958,1430748197,1493474
+2024-11,Manhattan,987,2696704215,2732223
+2024-11,Queens,1364,2906208534,2130651
+2024-11,"Staten Island",392,289662661,738935
+2024-12,Bronx,393,525303362,1336649
+2024-12,Brooklyn,1188,2183518089,1837978
+2024-12,Manhattan,1131,3113404100,2752788
+2024-12,Queens,1359,1273830180,937329
+2024-12,"Staten Island",395,300495991,760749
+2025-01,Bronx,341,345725775,1013858
+2025-01,Brooklyn,1121,1789282914,1596148
+2025-01,Manhattan,1129,3059332990,2709772
+2025-01,Queens,1348,1266223723,939335
+2025-01,"Staten Island",382,283211545,741391
+2025-02,Bronx,308,264363312,858322
+2025-02,Brooklyn,961,1358840727,1413986
+2025-02,Manhattan,1102,3452313653,3132771
+2025-02,Queens,1120,1038843349,927538
+2025-02,"Staten Island",323,255799104,791947
+2025-03,Bronx,444,1575563626,3548566
+2025-03,Brooklyn,1154,2354732060,2040495
+2025-03,Manhattan,1125,3756932108,3339495
+2025-03,Queens,1230,1284337614,1044176
+2025-03,"Staten Island",385,285509875,741584
+2025-04,Bronx,303,349286803,1152761
+2025-04,Brooklyn,1080,1817939193,1683277
+2025-04,Manhattan,1144,3010874955,2631883
+2025-04,Queens,1311,1290853551,984632
+2025-04,"Staten Island",344,251860759,732153
+2025-05,Bronx,363,513726347,1415224
+2025-05,Brooklyn,1129,1626857899,1440972
+2025-05,Manhattan,1194,3071676638,2572593
+2025-05,Queens,1530,4008445982,2619899
+2025-05,"Staten Island",351,309525682,881839
+2025-06,Bronx,333,517904561,1555268
+2025-06,Brooklyn,1225,2071536356,1691050
+2025-06,Manhattan,1396,3483680340,2495473
+2025-06,Queens,1264,1182769109,935735
+2025-06,"Staten Island",412,314193252,762604
+2025-07,Bronx,343,354319951,1033002
+2025-07,Brooklyn,1231,2008610976,1631690
+2025-07,Manhattan,1403,3666633460,2613423
+2025-07,Queens,1325,1194369293,901410
+2025-07,"Staten Island",412,359037449,871450
+2025-08,Bronx,300,221565860,738552
+2025-08,Brooklyn,1126,1899163257,1686645
+2025-08,Manhattan,1267,3042860987,2401626
+2025-08,Queens,1178,1168079461,991578
+2025-08,"Staten Island",349,278308521,797445
+2025-09,Bronx,269,501063018,1862687
+2025-09,Brooklyn,1021,2096381789,2053263
+2025-09,Manhattan,1113,2755867518,2476071
+2025-09,Queens,1001,915096096,914181
+2025-09,"Staten Island",122,99087188,812190
+month_name,sale_month,total_transactions,avg_price,borough
+January,1,341,1013858,Bronx
+January,1,1121,1596148,Brooklyn
+January,1,1129,2709772,Manhattan
+January,1,1348,939335,Queens
+January,1,382,741391,"Staten Island"
+February,2,308,858322,Bronx
+February,2,961,1413986,Brooklyn
+February,2,1102,3132771,Manhattan
+February,2,1120,927538,Queens
+February,2,323,791947,"Staten Island"
+March,3,444,3548566,Bronx
+March,3,1154,2040495,Brooklyn
+March,3,1125,3339495,Manhattan
+March,3,1230,1044176,Queens
+March,3,385,741584,"Staten Island"
+April,4,303,1152761,Bronx
+April,4,1080,1683277,Brooklyn
+April,4,1144,2631883,Manhattan
+April,4,1311,984632,Queens
+April,4,344,732153,"Staten Island"
+May,5,363,1415224,Bronx
+May,5,1129,1440972,Brooklyn
+May,5,1194,2572593,Manhattan
+May,5,1530,2619899,Queens
+May,5,351,881839,"Staten Island"
+June,6,333,1555268,Bronx
+June,6,1225,1691050,Brooklyn
+June,6,1396,2495473,Manhattan
+June,6,1264,935735,Queens
+June,6,412,762604,"Staten Island"
+July,7,343,1033002,Bronx
+July,7,1231,1631690,Brooklyn
+July,7,1403,2613423,Manhattan
+July,7,1325,901410,Queens
+July,7,412,871450,"Staten Island"
+August,8,300,738552,Bronx
+August,8,1126,1686645,Brooklyn
+August,8,1267,2401626,Manhattan
+August,8,1178,991578,Queens
+August,8,349,797445,"Staten Island"
+September,9,269,1862687,Bronx
+September,9,1021,2053263,Brooklyn
+September,9,1113,2476071,Manhattan
+September,9,1001,914181,Queens
+September,9,122,812190,"Staten Island"
+October,10,339,1097344,Bronx
+October,10,1093,1474224,Brooklyn
+October,10,1173,4498342,Manhattan
+October,10,1518,1173895,Queens
+October,10,446,825753,"Staten Island"
+November,11,310,1068097,Bronx
+November,11,958,1493474,Brooklyn
+November,11,987,2732223,Manhattan
+November,11,1364,2130651,Queens
+November,11,392,738935,"Staten Island"
+December,12,393,1336649,Bronx
+December,12,1188,1837978,Brooklyn
+December,12,1131,2752788,Manhattan
+December,12,1359,937329,Queens
+December,12,395,760749,"Staten Island"
+borough,price_range,transactions,percent_of_borough
+Bronx,"Under $500K",1446,35.74
+Bronx,"$500K - $1M",1696,41.92
+Bronx,"$1M - $2M",468,11.57
+Bronx,"$2M - $5M",217,5.36
+Bronx,"Over $5M",219,5.41
+Brooklyn,"Under $500K",2134,16.06
+Brooklyn,"$500K - $1M",4357,32.79
+Brooklyn,"$1M - $2M",4033,30.35
+Brooklyn,"$2M - $5M",2205,16.6
+Brooklyn,"Over $5M",558,4.2
+Manhattan,"Under $500K",1878,13.26
+Manhattan,"$500K - $1M",4160,29.37
+Manhattan,"$1M - $2M",3450,24.36
+Manhattan,"$2M - $5M",2965,20.93
+Manhattan,"Over $5M",1711,12.08
+Queens,"Under $500K",4832,31.08
+Queens,"$500K - $1M",6713,43.18
+Queens,"$1M - $2M",3095,19.91
+Queens,"$2M - $5M",448,2.88
+Queens,"Over $5M",460,2.96
+"Staten Island","Under $500K",899,20.84
+"Staten Island","$500K - $1M",2760,63.99
+"Staten Island","$1M - $2M",577,13.38
+"Staten Island","$2M - $5M",60,1.39
+"Staten Island","Over $5M",17,0.39
+metric,total_transactions,avg_price,total_volume,boroughs_active,earliest_transaction,latest_transaction
+"Overall Market",51358,1776037,91213717415,5,"2024-10-01 00:00:00","2025-09-30 00:00:00"
+Manhattan,14164,2851372,40386836867,39,"2024-10-01 00:00:00","2025-09-30 00:00:00"
+Brooklyn,13287,1674489,22248939250,60,"2024-10-01 00:00:00","2025-09-30 00:00:00"
+Queens,15548,1242026,19311030422,60,"2024-10-01 00:00:00","2025-09-30 00:00:00"
+Bronx,4046,1451293,5871932583,37,"2024-10-01 00:00:00","2025-09-30 00:00:00"
+"Staten Island",4313,787150,3394978293,58,"2024-10-01 00:00:00","2025-09-30 00:00:00"
+borough,recent_transactions,recent_avg_price,latest_transaction_month,earliest_transaction_month
+Manhattan,14164,2851372,2025-09,2024-10
+Brooklyn,13287,1674489,2025-09,2024-10
+Bronx,4046,1451293,2025-09,2024-10
+Queens,15548,1242026,2025-09,2024-10
+"Staten Island",4313,787150,2025-09,2024-10
+filter_type,filter_value,count
+borough,Queens,15548
+borough,Manhattan,14164
+borough,Brooklyn,13287
+borough,"Staten Island",4313
+borough,Bronx,4046
+building_class,"10 COOPS - ELEVATOR APARTMENTS",10711
+building_class,"01 ONE FAMILY DWELLINGS",9655
+building_class,"13 CONDOS - ELEVATOR APARTMENTS",9607
+building_class,"02 TWO FAMILY DWELLINGS",7210
+building_class,"09 COOPS - WALKUP APARTMENTS",2079
+building_class,"03 THREE FAMILY DWELLINGS",1934
+building_class,"07 RENTALS - WALKUP APARTMENTS",1503
+building_class,"17 CONDO COOPS",1080
+building_class,"15 CONDOS - 2-10 UNIT RESIDENTIAL",1061
+building_class,"44 CONDO PARKING",1029
+building_class,"04 TAX CLASS 1 CONDOS",936
+building_class,"12 CONDOS - WALKUP APARTMENTS",691
+building_class,"05 TAX CLASS 1 VACANT LAND",560
+building_class,"22 STORE BUILDINGS",500
+building_class,"14 RENTALS - 4-10 UNIT",331
+building_class,"47 CONDO NON-BUSINESS STORAGE",289
+building_class,"29 COMMERCIAL GARAGES",285
+building_class,"08 RENTALS - ELEVATOR APARTMENTS",258
+building_class,"21 OFFICE BUILDINGS",221
+building_class,"43 CONDO OFFICE BUILDINGS",200
+building_class,"46 CONDO STORE BUILDINGS",186
+building_class,"31 COMMERCIAL VACANT LAND",156
+building_class,"30 WAREHOUSES",129
+building_class,"11 SPECIAL CONDO BILLING LOTS",112
+building_class,"27 FACTORIES",99
+building_class,"06 TAX CLASS 1 - OTHER",92
+building_class,"45 CONDO HOTELS",85
+building_class,"28 COMMERCIAL CONDOS",68
+building_class,"37 RELIGIOUS FACILITIES",66
+building_class,"16 CONDOS - 2-10 UNIT WITH COMMERCIAL UNIT",56
+year,2025,38312
+year,2024,13046
